@@ -41,7 +41,7 @@ docker-compose.yml        # Docker Compose configuration
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/hibana2077/Bridge
    cd Bridge
    ```
 
