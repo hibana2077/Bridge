@@ -398,4 +398,4 @@ elif page == "Documentation":
 
 # Footer
 st.markdown("---")
-st.markdown("TradingView Alert Bridge &copy; 2023")
+st.markdown(f"TradingView Alert Bridge &copy; {datetime.now().year} | Version 1.0.0")
