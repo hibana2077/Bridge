@@ -12,7 +12,7 @@ services:
       - REDIS_DB=0
       - REDIS_PASSWORD=${REDIS_PASSWORD:-}
       - ENCRYPTION_KEY=${ENCRYPTION_KEY:-}
-    restart: always
+    # restart: always
     depends_on:
       - redis
     networks:
@@ -26,7 +26,7 @@ services:
     ports:
       - "8501:8501"
     environment:
-      - API_BASE_URL=${API_BASE_URL:-http://localhost:8000}
+      - API_BASE_URL=${API_BASE_URL:-http://backend:8000}
     restart: always
     depends_on:
       - backend
