@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  # FastAPI Backend Service
+  backend:
+    build:
+      context: ./bridge/backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY:-}
+    restart: always
+    depends_on:
+      - redis
+    networks:
+      - bridge_network
+
+  # Streamlit Frontend Service
+  frontend:
+    build:
+      context: ./bridge/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8501:8501"
+    environment:
+      - API_BASE_URL=${API_BASE_URL:-http://localhost:8000}
+    restart: always
+    depends_on:
+      - backend
+    networks:
+      - bridge_network
+
+  # Redis Database Service
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD:-}"
+    volumes:
+      - redis-data:/data
+    restart: always
+    networks:
+      - bridge_network
+
+networks:
+  bridge_network:
+    driver: bridge
+
+volumes:
+  redis-data:
+    driver: local
